@@ -11,6 +11,19 @@ const (
 	SEMICOLON  TokenType = ";"
 	PLUS       TokenType = "+"
 	ASSIGN     TokenType = "="
+	EQUAL      TokenType = "=="
+	NOT_EQ     TokenType = "!="
+	MINUS      TokenType = "-"
+	SLASH      TokenType = "/"
+	TRUE       TokenType = "TRUE"
+	FALSE      TokenType = "FALSE"
+	IF         TokenType = "IF"
+	ELSE       TokenType = "ELSE"
+	ASTERISK   TokenType = "*"
+	BANG       TokenType = "!"
+	LT         TokenType = "<"
+	GT         TokenType = ">"
+	RETURN     TokenType = "RETURN"
 	FUNCTION   TokenType = "FUNCTION"
 	IDENTIFIER TokenType = "IDENTIFIER"
 	LET        TokenType = "LET"
@@ -31,14 +44,27 @@ type Token struct {
 	Location SourceLocation
 }
 
-func NewToken(tType TokenType, literal byte, filename string, line int, column int) Token {
+var keywords = map[string]TokenType{
+	"let":    LET,
+	"fn":     FUNCTION,
+	"return": RETURN,
+	"else":   ELSE,
+	"if":     IF,
+	"true":   TRUE,
+	"false":  FALSE,
+}
+
+func GetIdentifierType(word string) TokenType {
+	v, ok := keywords[word]
+	if !ok {
+		return IDENTIFIER
+	}
+	return v
+}
+
+func NewToken(tType TokenType, literal byte) Token {
 	return Token{
 		Type:    tType,
 		Literal: string(literal),
-		Location: SourceLocation{
-			Column:   column,
-			Line:     line,
-			Filename: filename,
-		},
 	}
 }
