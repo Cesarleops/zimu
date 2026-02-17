@@ -1,7 +1,6 @@
 package lexer
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/cesarleops/zimu/internal/token"
@@ -39,7 +38,7 @@ func NewLexer(input string, filename string) *Lexer {
 
 func (l *Lexer) readChar() {
 	if l.readPosition >= len(l.input) {
-		logger.Print("overflow")
+		// logger.Print("overflow")
 		l.ch = 0
 	} else {
 		l.ch = l.input[l.readPosition]
@@ -68,7 +67,7 @@ func (l *Lexer) NextToken() token.Token {
 		next := l.peak()
 		if next == '=' {
 			tok = l.genTwoCharToken(tok, token.EQUAL, l.ch, next)
-			logger.Printf("DOUBLE TOKEN %v \n", tok)
+			// logger.Printf("DOUBLE TOKEN %v \n", tok)
 			return tok
 		} else {
 			tok = token.NewToken(token.ASSIGN, l.ch)
@@ -113,7 +112,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Type = token.GetIdentifierType(tok.Literal)
 			tok.Location.Line = l.loc.line
 			tok.Location.Filename = *l.loc.filename
-			fmt.Printf("WORD TOKEN %v \n", tok)
+			// fmt.Printf("WORD TOKEN %v \n", tok)
 			return tok
 		} else if isDigit(l.ch) {
 			tok.Location.Column = l.loc.column // We set the column at the start of the number
@@ -121,7 +120,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Type = token.INT
 			tok.Location.Line = l.loc.line
 			tok.Location.Filename = *l.loc.filename
-			fmt.Printf("DIGIT TOKEN %v \n", tok)
+			// fmt.Printf("DIGIT TOKEN %v \n", tok)
 			return tok
 		} else {
 			tok = token.NewToken(token.ILLEGAL, l.ch)
@@ -132,7 +131,7 @@ func (l *Lexer) NextToken() token.Token {
 	tok.Location.Line = l.loc.line
 	l.readChar()
 	l.loc.column += 1
-	fmt.Printf("NORMAL TOKEN %v \n", tok)
+	// fmt.Printf("NORMAL TOKEN %v \n", tok)
 	return tok
 
 }
@@ -168,9 +167,9 @@ func (l *Lexer) readNumber() string {
 }
 
 func (l *Lexer) genTwoCharToken(tok token.Token, tType token.TokenType, fChar byte, sChar byte) token.Token {
-	logger.Println("Building two char token")
+	// logger.Println("Building two char token")
 	tok.Literal = string(fChar) + string(sChar)
-	logger.Printf("literal %q\n", tok.Literal)
+	// logger.Printf("literal %q\n", tok.Literal)
 	tok.Type = tType
 	tok.Location.Filename = *l.loc.filename
 	tok.Location.Column = l.loc.column
