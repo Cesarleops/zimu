@@ -167,7 +167,6 @@ func (l *Lexer) readNumber() string {
 }
 
 func (l *Lexer) genTwoCharToken(tok token.Token, tType token.TokenType, fChar byte, sChar byte) token.Token {
-	// logger.Println("Building two char token")
 	tok.Literal = string(fChar) + string(sChar)
 	// logger.Printf("literal %q\n", tok.Literal)
 	tok.Type = tType
